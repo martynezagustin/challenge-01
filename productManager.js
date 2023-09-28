@@ -1,12 +1,16 @@
-class ProductManager{
-    constructor(){
+class ProductManager {
+    constructor() {
         this.products = []
         this.incrementId = 0
     }
-    addProduct(title, description, price, thumbnail, code, stock){
-        if(this.products.some(product => product.code === code)){
+    addProduct(title, description, price, thumbnail, code, stock) {
+        if(!title || !description || !price || !thumbnail || !code || !stock){
+            console.log("Chequea los campos, hay errores.");
+        }
+        if (this.products.some(product => product.code === code)) {
             throw new Error("Ya existe el producto!")
-        } else {
+        }
+        else {
 
             const id = this.incrementId++
 
@@ -20,19 +24,19 @@ class ProductManager{
                 stock
             }
             this.products.push(product)
-
             return product
+
         }
     }
-    getProductById(id){
+    getProductById(id) {
         const productFound = this.products.find(product => product.id === parseInt(id))
-        if(!productFound){
+        if (!productFound) {
             throw new Error("Product not found.");
         }
-        
         return productFound
+
     }
-    getProducts(){
+    getProducts() {
         return this.products
     }
 }
@@ -44,11 +48,9 @@ productManager.addProduct("Producto prueba", "Este es un producto prueba", 233, 
 //creamos otro producto
 productManager.addProduct("Producto2", "Otro producto", 129, "img", 288, 145)
 
+
 //findeamos un producto
 const products = productManager.getProducts()
-const productId = products[1].id
-console.log(productManager.getProductById(productId));
-
 
 //intentamos crear un producto con mismo codigo
 try {
@@ -62,4 +64,11 @@ try {
     console.log(productManager.getProductById(2));
 } catch (error) {
     console.log(error.message);
+}
+
+//campos vacios
+try {
+    productManager.addProduct()
+} catch (error) {
+    console.log(error);
 }
